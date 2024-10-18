@@ -4159,3 +4159,11 @@ input, select, textarea {
 html {
 	scroll-behavior: smooth;
 }
+
+.icon.brands.fa-orcid {
+    color: #A6CE39; /* ORCID green color */
+}
+
+.icon.brands.fa-linkedin {
+    color: #0077B5; /* LinkedIn blue color */
+}
