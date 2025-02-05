@@ -181,27 +181,76 @@
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
 			<script>
+				const banner = document.querySelector('#banner');
+				let moveCount = 0; // To track how many times the logo has moved
+				let originalIconClicked = 0; // To track how many times the original icon has been clicked
+			  
+				// Function to create a new logo element (new star)
+				function createNewLogo() {
+				  const newLogo = document.createElement('div');
+				  newLogo.classList.add('logo'); // Copy the original logo class
+				  
+				  const newIcon = document.createElement('span');
+				  newIcon.classList.add('icon', 'fa-star'); // Add the same icon class
+			  
+				  newLogo.appendChild(newIcon);
+				  banner.appendChild(newLogo);
+			  
+				  // Apply initial random position to the new icon
+				  const x = Math.random() * (banner.clientWidth - newLogo.offsetWidth);
+				  const y = Math.random() * (banner.clientHeight - newLogo.offsetHeight);
+			  
+				  newLogo.style.left = `${x}px`;
+				  newLogo.style.top = `${y}px`;
+			  
+				  // Add the event listener for the new icon (click to move or delete)
+				  newIcon.addEventListener('click', (event) => {
+					event.stopPropagation();
+					// Delete the icon if clicked (if it is not the original one)
+					if (!newIcon.classList.contains('original')) {
+					  newLogo.remove();
+					}
+				  });
+				}
+			  
 				const logo = document.querySelector('.logo');
 				const icon = logo.querySelector('.icon');
-				const banner = document.querySelector('#banner');
 				
 				icon.addEventListener('click', (event) => {
-				  // Prevent the event from bubbling up to the parent .logo div
 				  event.stopPropagation();
+				  
+				  // Increment the click count for the original icon
+				  originalIconClicked++;
 			  
 				  // Get the available width and height of the banner
 				  const bannerWidth = banner.clientWidth;
 				  const bannerHeight = banner.clientHeight;
 			  
 				  // Get random positions for the logo, limited by the banner section size
-				  const x = Math.random() * (window.innerWidth - logo.offsetWidth);  // Random X position
-				  const y = Math.random() * (bannerHeight-200 - logo.offsetHeight); // Random Y position
+				  const x = Math.random() * (bannerWidth - logo.offsetWidth);  // Random X position
+				  const y = Math.random() * (bannerHeight - logo.offsetHeight); // Random Y position
 			  
 				  // Apply the new position to the logo
 				  logo.style.left = `${x}px`;
 				  logo.style.top = `${y}px`;
+			  
+				  // Move the original icon and create new stars only after it has been clicked twice
+				  moveCount++;
+			  
+				  if (originalIconClicked >= 2) {
+					// Change the original icon to a filled star after two moves
+					icon.classList.add('fa-solid');
+					icon.classList.replace('fa-star', 'fa-star');
+					icon.classList.add('original');  // Mark this as the "original" star to prevent deleting it
+					
+					// Create a new star (icon) after two clicks on the original star
+					createNewLogo();
+					
+					originalIconClicked = 0; // Reset click count for original star
+				  }
 				});
 			  </script>
+			  
 			  
 	</body>
 </html>
