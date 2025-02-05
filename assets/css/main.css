@@ -4171,7 +4171,6 @@ html {
 #banner {
 	position: relative;  /* This will allow the logo to move inside it */
 	height: 600px;       /* Adjust this height to whatever size you want */
-	background-color: lightgray; /* Just for visibility */
   }
   
   .logo {
