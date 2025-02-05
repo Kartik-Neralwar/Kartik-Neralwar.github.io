@@ -183,34 +183,41 @@
 			<script>
 				window.onload = () => {
 				  const banner = document.querySelector('#banner');
-				  let originalIconClicked = 0; // Track the number of clicks on the original star
+				  let originalIconClicked = 0; // Track clicks on the original star
 			  
-				  // Function to create a new logo element (new star)
+				  // Function to create a new logo (new star)
 				  function createNewLogo() {
 					const newLogo = document.createElement('div');
-					newLogo.classList.add('logo'); // Add logo class
-					
+					newLogo.classList.add('logo'); // Apply same class for styling
+			  
 					const newIcon = document.createElement('span');
-					newIcon.classList.add('icon', 'fa-star'); // Add the empty star icon class
+					newIcon.classList.add('icon', 'fa-star'); // Default to an empty star
 			  
 					newLogo.appendChild(newIcon);
-					banner.appendChild(newLogo);
+					document.body.appendChild(newLogo); // Append to the whole page instead of #banner
 			  
-					// Get the full page width and height (window size)
+					// Ensure the new star is absolutely positioned
+					newLogo.style.position = 'absolute';
+			  
+					// Get the full page width and height (not limited to #banner)
 					const pageWidth = window.innerWidth;
 					const pageHeight = window.innerHeight;
 			  
-					// Apply a random position to the new logo, ensuring it fits within the page
-					const x = Math.random() * (pageWidth - newLogo.offsetWidth);  // Ensure it doesn't go out of bounds
-					const y = Math.random() * (pageHeight - newLogo.offsetHeight); // Ensure it doesn't go out of bounds
+					// Get the width/height of the new element (ensure it's loaded in the DOM)
+					const logoWidth = newLogo.offsetWidth || 20;  // Default to 20px if not available
+					const logoHeight = newLogo.offsetHeight || 20;
 			  
+					// Generate a random position within page bounds
+					const x = Math.random() * (pageWidth - logoWidth);
+					const y = Math.random() * (pageHeight - logoHeight);
+			  
+					// Apply the new position
 					newLogo.style.left = `${x}px`;
 					newLogo.style.top = `${y}px`;
 			  
-					// Add the event listener for the new icon (click to move or delete)
+					// Add event listener: Clicking a duplicate star removes it
 					newIcon.addEventListener('click', (event) => {
 					  event.stopPropagation();
-					  // Delete the icon if clicked (if it is not the original one)
 					  if (!newIcon.classList.contains('original')) {
 						newLogo.remove();
 					  }
@@ -220,56 +227,46 @@
 				  const logo = document.querySelector('.logo');
 				  const icon = logo.querySelector('.icon');
 			  
-				  // Alternate between fa-star and fa-solid fa-star every 2 seconds
+				  // Alternate between empty and filled star every 2 seconds
 				  setInterval(() => {
 					if (icon.classList.contains('fa-star')) {
 					  icon.classList.remove('fa-star');
-					  icon.classList.add('fa-solid fa-star', 'fa-star'); // Change to filled star
+					  icon.classList.add('fa-solid', 'fa-star');
 					} else {
 					  icon.classList.remove('fa-solid', 'fa-star');
-					  icon.classList.add('fa-star'); // Change back to empty star
+					  icon.classList.add('fa-star');
 					}
-				  }, 2000); // Change every 2 seconds (2000 ms)
+				  }, 2000); // Every 2 seconds
 			  
 				  icon.addEventListener('click', (event) => {
 					event.stopPropagation();
-					
-					// Track the number of clicks on the original icon (the empty star)
 					originalIconClicked++;
 			  
-					// Get the full page width and height (window size)
+					// Get full page width and height
 					const pageWidth = window.innerWidth;
 					const pageHeight = window.innerHeight;
 			  
-					// Get random positions for the logo, limited by the full page size
-					const x = Math.random() * (pageWidth - logo.offsetWidth);  // Random X position
-					const y = Math.random() * (pageHeight - logo.offsetHeight); // Random Y position
+					// Move original logo to a random position
+					const logoWidth = logo.offsetWidth || 20;
+					const logoHeight = logo.offsetHeight || 20;
+					const x = Math.random() * (pageWidth - logoWidth);
+					const y = Math.random() * (pageHeight - logoHeight);
 			  
-					// Apply the new position to the logo
+					logo.style.position = 'absolute';
 					logo.style.left = `${x}px`;
 					logo.style.top = `${y}px`;
 			  
-					// Only after the original icon has been clicked twice, change to filled star and create a new star
+					// After two clicks, change to filled star and create a new star
 					if (originalIconClicked >= 2) {
-					  // Change the original icon to a filled star (fa-solid fa-star)
-					  icon.classList.remove('fa-star');  // Remove the empty star class
-					  icon.classList.add('fa-solid', 'fa-star');  // Add the filled star class
-					  
-					  // Mark the original icon so it doesn't get deleted when clicked
-					  icon.classList.add('original');
-					  
-					  // Create a new star (icon) after two clicks on the original star
+					  icon.classList.remove('fa-star');
+					  icon.classList.add('fa-solid', 'fa-star');
+					  icon.classList.add('original'); // Mark it so it doesn’t get removed
 					  createNewLogo();
-					  
-					  // Reset click count for original star
-					  originalIconClicked = 0;
+					  originalIconClicked = 0; // Reset click count
 					}
 				  });
-				}
+				};
 			  </script>
-						
-			  
-			  
 	</body>
 </html>
 
