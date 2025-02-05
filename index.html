@@ -228,15 +228,15 @@
 				  const icon = logo.querySelector('.icon');
 			  
 				  // Alternate between empty and filled star every 2 seconds
-				  setInterval(() => {
-					if (icon.classList.contains('fa-star')) {
-					  icon.classList.remove('fa-star');
-					  icon.classList.add('fa-solid', 'fa-star');
-					} else {
-					  icon.classList.remove('fa-solid', 'fa-star');
-					  icon.classList.add('fa-star');
-					}
-				  }, 2000); // Every 2 seconds
+				//   setInterval(() => {
+				// 	if (icon.classList.contains('fa-star')) {
+				// 	  icon.classList.remove('fa-star');
+				// 	  icon.classList.add('fa-solid', 'fa-star');
+				// 	} else {
+				// 	  icon.classList.remove('fa-solid', 'fa-star');
+				// 	  icon.classList.add('fa-star');
+				// 	}
+				//   }, 2000); // Every 2 seconds
 			  
 				  icon.addEventListener('click', (event) => {
 					event.stopPropagation();
@@ -258,8 +258,8 @@
 			  
 					// After two clicks, change to filled star and create a new star
 					if (originalIconClicked >= 2) {
-					  icon.classList.remove('fa-star');
-					  icon.classList.add('fa-solid', 'fa-star');
+					//   icon.classList.remove('fa-star');
+					//   icon.classList.add('fa-solid', 'fa-star');
 					  icon.classList.add('original'); // Mark it so it doesn’t get removed
 					  createNewLogo();
 					  originalIconClicked = 0; // Reset click count
