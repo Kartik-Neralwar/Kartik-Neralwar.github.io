@@ -182,23 +182,26 @@
 			<script src="assets/js/main.js"></script>
 			<script>
 				const banner = document.querySelector('#banner');
-				let moveCount = 0; // To track how many times the logo has moved
-				let originalIconClicked = 0; // To track how many times the original icon has been clicked
+				let originalIconClicked = 0; // Track the number of clicks on the original star
 			  
 				// Function to create a new logo element (new star)
 				function createNewLogo() {
 				  const newLogo = document.createElement('div');
-				  newLogo.classList.add('logo'); // Copy the original logo class
+				  newLogo.classList.add('logo'); // Add logo class
 				  
 				  const newIcon = document.createElement('span');
-				  newIcon.classList.add('icon', 'fa-star'); // Add the same icon class
+				  newIcon.classList.add('icon', 'fa-star'); // Add the empty star icon class
 			  
 				  newLogo.appendChild(newIcon);
 				  banner.appendChild(newLogo);
 			  
-				  // Apply initial random position to the new icon
-				  const x = Math.random() * (banner.clientWidth - newLogo.offsetWidth);
-				  const y = Math.random() * (banner.clientHeight - newLogo.offsetHeight);
+				  // Get the available width and height of the banner
+				  const bannerWidth = banner.clientWidth;
+				  const bannerHeight = banner.clientHeight;
+			  
+				  // Apply a random position to the new logo, making sure it fits within the banner's bounds
+				  const x = Math.random() * (bannerWidth - newLogo.offsetWidth);  // Ensure it doesn't go out of bounds
+				  const y = Math.random() * (bannerHeight - newLogo.offsetHeight); // Ensure it doesn't go out of bounds
 			  
 				  newLogo.style.left = `${x}px`;
 				  newLogo.style.top = `${y}px`;
@@ -219,7 +222,7 @@
 				icon.addEventListener('click', (event) => {
 				  event.stopPropagation();
 				  
-				  // Increment the click count for the original icon
+				  // Track the number of clicks on the original icon (the empty star)
 				  originalIconClicked++;
 			  
 				  // Get the available width and height of the banner
@@ -234,22 +237,23 @@
 				  logo.style.left = `${x}px`;
 				  logo.style.top = `${y}px`;
 			  
-				  // Move the original icon and create new stars only after it has been clicked twice
-				  moveCount++;
-			  
+				  // Only after the original icon has been clicked twice, change to filled star and create a new star
 				  if (originalIconClicked >= 2) {
-					// Change the original icon to a filled star after two moves
-					icon.classList.add('fa-solid');
-					icon.classList.replace('fa-star', 'fa-star');
-					icon.classList.add('original');  // Mark this as the "original" star to prevent deleting it
+					// Change the original icon to a filled star (fa-solid fa-star)
+					icon.classList.remove('fa-star');  // Remove the empty star class
+					icon.classList.add('fa-solid', 'fa-star');  // Add the filled star class
+					
+					// Mark the original icon so it doesn't get deleted when clicked
+					icon.classList.add('original');
 					
 					// Create a new star (icon) after two clicks on the original star
 					createNewLogo();
 					
-					originalIconClicked = 0; // Reset click count for original star
+					// Reset click count for original star
+					originalIconClicked = 0;
 				  }
 				});
-			  </script>
+			  </script>			  
 			  
 			  
 	</body>
