@@ -3403,7 +3403,7 @@ input, select, textarea {
 			#banner .logo .icon {
 				border-radius: 100%;
 				border: solid 2px rgba(255, 255, 255, 0.125);
-				cursor: default;
+				cursor: pointer;
 				display: inline-block;
 				font-size: 2em;
 				height: 2.25em;
@@ -4167,3 +4167,20 @@ html {
 .icon.brands.fa-linkedin {
     color: #0077B5; /* LinkedIn blue color */
 }
+
+#banner {
+	position: relative;  /* This will allow the logo to move inside it */
+	height: 600px;       /* Adjust this height to whatever size you want */
+	background-color: lightgray; /* Just for visibility */
+  }
+  
+  .logo {
+	position: relative;    /* To allow free movement inside the banner */
+	cursor: default;
+	z-index: 10 ;
+  }
+  
+  .logo .icon {
+	cursor: pointer;      /* Only the icon itself is clickable */
+	transition: all 0.3s ease ;
+  }

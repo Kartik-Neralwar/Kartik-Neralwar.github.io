@@ -180,6 +180,29 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
-
+			<script>
+				const logo = document.querySelector('.logo');
+				const icon = logo.querySelector('.icon');
+				const banner = document.querySelector('#banner');
+				
+				icon.addEventListener('click', (event) => {
+				  // Prevent the event from bubbling up to the parent .logo div
+				  event.stopPropagation();
+			  
+				  // Get the available width and height of the banner
+				  const bannerWidth = banner.clientWidth;
+				  const bannerHeight = banner.clientHeight;
+			  
+				  // Get random positions for the logo, limited by the banner section size
+				  const x = Math.random() * (window.innerWidth - logo.offsetWidth);  // Random X position
+				  const y = Math.random() * (bannerHeight-200 - logo.offsetHeight); // Random Y position
+			  
+				  // Apply the new position to the logo
+				  logo.style.left = `${x}px`;
+				  logo.style.top = `${y}px`;
+				});
+			  </script>
+			  
 	</body>
 </html>
+
