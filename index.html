@@ -190,6 +190,7 @@
 					let twinkleInterval;
 
 					// Function to make the original star twinkle
+					let twinkleTimeout;
 					function startTwinkling(icon) {
 						let isDefaultColor = true;
 						twinkleInterval = setInterval(() => {
@@ -202,8 +203,13 @@
 					function stopTwinkling() {
 						clearInterval(twinkleInterval);
 						icon.style.color = ''; // Reset to normal color
+						clearTimeout(twinkleTimeout); // Reset the 10s countdown
+						// Restart twinkling after 10 seconds of inactivity
+						twinkleTimeout = setTimeout(() => {
+        					startTwinkling(icon);
+    					}, 5000); // 10 seconds
 					}
-
+					
 					// Function to generate random positions within the full page
 					function getRandomPosition() {
 						const maxX = window.innerWidth - 40;
