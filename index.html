@@ -182,71 +182,71 @@
 			<script src="assets/js/main.js"></script>
 			<script>
 				window.onload = () => {
-				  const banner = document.querySelector('#banner');
 				  let originalIconClicked = 0; // Track clicks on the original star
+				  let primeIndex = 0; // Index in the prime number sequence
+				  let twinkleInterval; // Store twinkle effect interval
 			  
-				  // Function to create a new logo (new star)
-				  function createNewLogo() {
-					const newLogo = document.createElement('div');
-					newLogo.classList.add('logo'); // Apply same class for styling
-			  
-					const newIcon = document.createElement('span');
-					newIcon.classList.add('icon', 'fa-star'); // Default to an empty star
-			  
-					newLogo.appendChild(newIcon);
-					document.body.appendChild(newLogo); // Append to the whole page instead of #banner
-			  
-					// Ensure the new star is absolutely positioned
-					newLogo.style.position = 'absolute';
-			  
-					// Get the full page width and height (not limited to #banner)
-					const pageWidth = window.innerWidth;
-					const pageHeight = window.innerHeight;
-			  
-					// Get the width/height of the new element (ensure it's loaded in the DOM)
-					const logoWidth = newLogo.offsetWidth || 20;  // Default to 20px if not available
-					const logoHeight = newLogo.offsetHeight || 20;
-			  
-					// Generate a random position within page bounds
-					const x = Math.random() * (pageWidth - logoWidth);
-					const y = Math.random() * (pageHeight - logoHeight);
-			  
-					// Apply the new position
-					newLogo.style.left = `${x}px`;
-					newLogo.style.top = `${y}px`;
-			  
-					// Add event listener: Clicking a duplicate star removes it
-					newIcon.addEventListener('click', (event) => {
-					  event.stopPropagation();
-					  if (!newIcon.classList.contains('original')) {
-						newLogo.remove();
-					  }
-					});
-				  }
+				  const primeNumbers = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]; // List of prime numbers
 			  
 				  const logo = document.querySelector('.logo');
 				  const icon = logo.querySelector('.icon');
 			  
-				  // Alternate between empty and filled star every 2 seconds
-				//   setInterval(() => {
-				// 	if (icon.classList.contains('fa-star')) {
-				// 	  icon.classList.remove('fa-star');
-				// 	  icon.classList.add('fa-solid', 'fa-star');
-				// 	} else {
-				// 	  icon.classList.remove('fa-solid', 'fa-star');
-				// 	  icon.classList.add('fa-star');
-				// 	}
-				//   }, 2000); // Every 2 seconds
+				  // Function to start the twinkle effect (slow for original star)
+				  function startTwinkling(element, speed = 1000) {
+					twinkleInterval = setInterval(() => {
+					  if (element.style.color === '') {
+						element.style.color = getComputedStyle(document.body).backgroundColor; // Match background
+					  } else {
+						element.style.color = ''; // Reset to default
+					  }
+					}, speed);
+				  }
 			  
+				  // Start twinkling the original star
+				  startTwinkling(icon, 1000); // Slower twinkle effect
+			  
+				  // Function to create new stars at random positions
+				  function createNewStars(count) {
+					for (let i = 0; i < count; i++) {
+					  const newLogo = document.createElement('div');
+					  newLogo.classList.add('logo');
+			  
+					  const newIcon = document.createElement('span');
+					  newIcon.classList.add('icon', 'fa-star');
+					  newLogo.appendChild(newIcon);
+					  document.body.appendChild(newLogo);
+			  
+					  newLogo.style.position = 'absolute';
+			  
+					  const pageWidth = window.innerWidth;
+					  const pageHeight = window.innerHeight;
+					  const logoWidth = newLogo.offsetWidth || 20;
+					  const logoHeight = newLogo.offsetHeight || 20;
+			  
+					  const x = Math.random() * (pageWidth - logoWidth);
+					  const y = Math.random() * (pageHeight - logoHeight);
+			  
+					  newLogo.style.left = `${x}px`;
+					  newLogo.style.top = `${y}px`;
+			  
+					  // Clicking a duplicate star removes it
+					  newIcon.addEventListener('click', (event) => {
+						event.stopPropagation();
+						newLogo.remove();
+					  });
+					}
+				  }
+			  
+				  // Clicking the original star
 				  icon.addEventListener('click', (event) => {
 					event.stopPropagation();
 					originalIconClicked++;
 			  
-					// Get full page width and height
+					clearInterval(twinkleInterval); // Stop twinkling after first click
+					icon.style.color = ''; // Reset to normal color
+			  
 					const pageWidth = window.innerWidth;
 					const pageHeight = window.innerHeight;
-			  
-					// Move original logo to a random position
 					const logoWidth = logo.offsetWidth || 20;
 					const logoHeight = logo.offsetHeight || 20;
 					const x = Math.random() * (pageWidth - logoWidth);
@@ -256,17 +256,20 @@
 					logo.style.left = `${x}px`;
 					logo.style.top = `${y}px`;
 			  
-					// After two clicks, change to filled star and create a new star
-					if (originalIconClicked >= 2) {
-					//   icon.classList.remove('fa-star');
-					//   icon.classList.add('fa-solid', 'fa-star');
-					  icon.classList.add('original'); // Mark it so it doesn’t get removed
-					  createNewLogo();
-					  originalIconClicked = 0; // Reset click count
+					// On first double-click, start prime-based spawning
+					if (originalIconClicked == 2) {
+					  createNewStars(2); // First prime number: 2
+					  originalIconClicked = 0;
+					  primeIndex = 1; // Move to next prime (3)
+					} else if (originalIconClicked >= 1) {
+					  createNewStars(primeNumbers[primeIndex]); // Spawn prime number of stars
+					  primeIndex++; // Move to the next prime number
 					}
 				  });
 				};
 			  </script>
+			  
+			  
 	</body>
 </html>
 
