@@ -257,11 +257,7 @@
 					logo.style.top = `${y}px`;
 			  
 					// On first double-click, start prime-based spawning
-					if (originalIconClicked == 2) {
-					  createNewStars(2); // First prime number: 2
-					  originalIconClicked = 0;
-					  primeIndex = 1; // Move to next prime (3)
-					} else if (originalIconClicked >= 1) {
+					if (originalIconClicked >= 1) {
 					  createNewStars(primeNumbers[primeIndex]); // Spawn prime number of stars
 					  primeIndex++; // Move to the next prime number
 					}
